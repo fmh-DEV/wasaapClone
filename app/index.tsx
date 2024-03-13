@@ -10,7 +10,17 @@ const Page = () => {
   return (
     <View style={styles.container}>
       <Image source={{ uri: welcome_image }} style={styles.welcome} />
-      <Text>FIRST PAGE!!!</Text>
+      <Text style={styles.headline}>Welcome to WhatsApp clone.</Text>
+      <Text style={styles.description}>
+        Read our{' '}
+        <Text style={styles.link} onPress={() => {}}>
+          Privacy Policy
+        </Text>
+        . {'Tap "Agree and continue" to accept the '}
+        <Text style={styles.link} onPress={() => {}}>
+          Terms of Service
+        </Text>
+      </Text>
     </View>
   );
 };
@@ -28,7 +38,11 @@ const styles = StyleSheet.create({
     height: 300,
     marginBottom: 80,
   },
-  headline: {},
+  headline: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginVertical: 20,
+  },
   description: {},
   link: {
     color: Colors.gray,
