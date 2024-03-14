@@ -1,26 +1,44 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import React from 'react';
 import welcomeImage from '@/assets/images/welcome.png';
 import Colors from '@/constants/Colors';
+import { Link } from 'expo-router';
 
 //
 const welcome_image = Image.resolveAssetSource(welcomeImage).uri;
 
 const Page = () => {
+  //
+  const openLink = () => {
+    Linking.openURL('https://www.google.com');
+  };
+  //
   return (
     <View style={styles.container}>
       <Image source={{ uri: welcome_image }} style={styles.welcome} />
       <Text style={styles.headline}>Welcome to WhatsApp clone.</Text>
       <Text style={styles.description}>
         Read our{' '}
-        <Text style={styles.link} onPress={() => {}}>
+        <Text style={styles.link} onPress={openLink}>
           Privacy Policy
         </Text>
         . {'Tap "Agree and continue" to accept the '}
-        <Text style={styles.link} onPress={() => {}}>
+        <Text style={styles.link} onPress={openLink}>
           Terms of Service
         </Text>
       </Text>
+      <Link replace href={'/otp'} asChild>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Agree and continue</Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 };
@@ -43,9 +61,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 20,
   },
-  description: {},
-  link: {
+  description: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 20,
     color: Colors.gray,
+  },
+  link: {
+    color: Colors.primary,
+  },
+  button: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: Colors.primary,
+    fontSize: 22,
+    fontWeight: 'bold',
   },
 });
 
