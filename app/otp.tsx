@@ -49,12 +49,12 @@ const Page = () => {
     setTimeout(() => {
       setLoading(false);
       router.push(`/verify/${phoneNumber}`);
-    }, 1500);
+    }, 1000);
   };
   const trySignIn = async () => {};
   //
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
       <View style={styles.container}>
         {loading && (
           <View style={[StyleSheet.absoluteFill, styles.loading]}>
