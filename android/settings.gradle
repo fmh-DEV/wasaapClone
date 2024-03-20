@@ -1,4 +1,4 @@
-rootProject.name = 'temp'
+rootProject.name = 'wasapclone'
 
 dependencyResolutionManagement {
   versionCatalogs {
