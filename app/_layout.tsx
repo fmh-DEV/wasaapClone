@@ -1,13 +1,11 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
-import { Link, Stack, useRouter, useSegments } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import * as SecureStore from 'expo-secure-store';
 import { TouchableOpacity, View } from 'react-native';
-import Colors from '@/constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
@@ -64,14 +62,14 @@ const InitialLayout = () => {
 
     if (isSignedIn && !inTabsGroup) {
       //router.replace('(tabs)/chats');
-      console.log('tabs:');
+      console.log('tabs:  ', segments);
     } else if (!isSignedIn) {
       router.replace('/');
     }
   }, [isSignedIn]);
 
-  const inTabs = segments[0];
-  console.log(segments);
+  const inTabs = segments;
+  console.log('segments', inTabs);
 
   if (!loaded || !isLoaded) {
     return <View />;
@@ -95,7 +93,7 @@ const InitialLayout = () => {
           headerBackTitle: 'Edit number',
         }}
       />
-      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+      <Stack.Screen name='(tabs)/chats' options={{ headerShown: false }} />
     </Stack>
   );
 };
