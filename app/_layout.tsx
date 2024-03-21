@@ -1,11 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
-import { Stack, useRouter, useSegments } from 'expo-router';
+import { Link, Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import * as SecureStore from 'expo-secure-store';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
+import Colors from '@/constants/Colors';
+import { Ionicons } from '@expo/vector-icons';
+
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 // Cache the Clerk JWT
@@ -35,11 +38,9 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 const InitialLayout = () => {
-  //
   const { isLoaded, isSignedIn } = useAuth();
-  const router = useRouter();
   const segments = useSegments();
-
+  const router = useRouter();
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
@@ -62,11 +63,15 @@ const InitialLayout = () => {
     const inTabsGroup = segments[0] === '(tabs)';
 
     if (isSignedIn && !inTabsGroup) {
-      router.replace('/(tabs)/chats');
+      //router.replace('(tabs)/chats');
+      console.log('tabs:');
     } else if (!isSignedIn) {
       router.replace('/');
     }
   }, [isSignedIn]);
+
+  const inTabs = segments[0];
+  console.log(segments);
 
   if (!loaded || !isLoaded) {
     return <View />;
@@ -78,7 +83,7 @@ const InitialLayout = () => {
       <Stack.Screen
         name='otp'
         options={{
-          headerTitle: 'Enter your phone number',
+          headerTitle: 'Enter Your Phone Number',
           headerBackVisible: false,
         }}
       />
@@ -90,6 +95,7 @@ const InitialLayout = () => {
           headerBackTitle: 'Edit number',
         }}
       />
+      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
     </Stack>
   );
 };

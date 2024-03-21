@@ -9,7 +9,9 @@ import {
 import React from 'react';
 import welcomeImage from '@/assets/images/welcome.png';
 import Colors from '@/constants/Colors';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+import { useAuth } from '@clerk/clerk-expo';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 //
 const welcome_image = Image.resolveAssetSource(welcomeImage).uri;
