@@ -32,10 +32,9 @@ const Page = () => {
 
   useEffect(() => {
     if (code.length === 6) {
-      console.log('verify', code);
+      console.log('verifying :::::::', code);
 
       if (signin === 'true') {
-        console.log('signin');
         veryifySignIn();
       } else {
         verifyCode();
@@ -59,7 +58,6 @@ const Page = () => {
   };
 
   const veryifySignIn = async () => {
-    console.log('veryifySignIn');
     try {
       await signIn!.attemptFirstFactor({
         strategy: 'phone_code',

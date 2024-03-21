@@ -123,7 +123,7 @@ const Page = () => {
 
         <View style={styles.list}>
           <View style={styles.listItem}>
-            <Text style={styles.listItemText}>Germany</Text>
+            <Text style={styles.listItemText}>Brazil</Text>
             <Ionicons name='chevron-forward' size={20} color={Colors.gray} />
           </View>
           <View style={styles.separator} />

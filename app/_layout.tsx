@@ -37,8 +37,10 @@ SplashScreen.preventAutoHideAsync();
 
 const InitialLayout = () => {
   const { isLoaded, isSignedIn } = useAuth();
-  const segments = useSegments();
   const router = useRouter();
+  const segments = useSegments();
+  //console.log('segments ::::', segments);
+
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
@@ -58,18 +60,18 @@ const InitialLayout = () => {
   useEffect(() => {
     if (!isLoaded) return;
 
+    console.log('segments ::::', segments);
+
+    console.log('Seg[0] !!!', segments[0]);
     const inTabsGroup = segments[0] === '(tabs)';
 
-    if (isSignedIn && !inTabsGroup) {
-      //router.replace('(tabs)/chats');
+    if (isSignedIn) {
+      router.replace('(tabs)/chats');
       console.log('tabs:  ', segments);
     } else if (!isSignedIn) {
       router.replace('/');
     }
   }, [isSignedIn]);
-
-  const inTabs = segments;
-  console.log('segments', inTabs);
 
   if (!loaded || !isLoaded) {
     return <View />;
