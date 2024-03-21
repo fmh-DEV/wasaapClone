@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
@@ -14,6 +15,11 @@ import Colors from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaskInput from 'react-native-mask-input';
+import {
+  isClerkAPIResponseError,
+  useSignIn,
+  useSignUp,
+} from '@clerk/clerk-expo';
 
 const Page = () => {
   //
@@ -22,6 +28,9 @@ const Page = () => {
   const { bottom } = useSafeAreaInsets();
   const router = useRouter();
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 90 : 0;
+  const { signUp, setActive } = useSignUp();
+  const { signIn } = useSignIn();
+
   const GER_PHONE = [
     `+`,
     /\d/,
@@ -46,10 +55,24 @@ const Page = () => {
   };
   const sendOTP = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await signUp!.create({ phoneNumber });
+
+      signUp!.preparePhoneNumberVerification();
       router.push(`/verify/${phoneNumber}`);
-    }, 1000);
+      //
+    } catch (err) {
+      console.log(err);
+      if (isClerkAPIResponseError(err)) {
+        if (err.errors[0].code === 'form_identifier_exists') {
+          console.log('User exists');
+          await trySignIn();
+        } else {
+          setLoading(false);
+          Alert.alert('Error', err.errors[0].message);
+        }
+      }
+    }
   };
   const trySignIn = async () => {};
   //
