@@ -39,7 +39,6 @@ const InitialLayout = () => {
   const { isLoaded, isSignedIn } = useAuth();
   const router = useRouter();
   const segments = useSegments();
-  //console.log('segments ::::', segments);
 
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -60,14 +59,10 @@ const InitialLayout = () => {
   useEffect(() => {
     if (!isLoaded) return;
 
-    console.log('segments ::::', segments);
-
-    console.log('Seg[0] !!!', segments[0]);
     const inTabsGroup = segments[0] === '(tabs)';
 
     if (isSignedIn) {
-      router.replace('(tabs)/chats');
-      console.log('tabs:  ', segments);
+      router.replace('/(tabs)/chats');
     } else if (!isSignedIn) {
       router.replace('/');
     }
@@ -95,7 +90,7 @@ const InitialLayout = () => {
           headerBackTitle: 'Edit number',
         }}
       />
-      <Stack.Screen name='(tabs)/chats' options={{ headerShown: false }} />
+      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
     </Stack>
   );
 };
