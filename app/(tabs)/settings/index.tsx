@@ -3,7 +3,13 @@ import Colors from '@/constants/Colors';
 import { defaultStyles } from '@/constants/Styles';
 import { useAuth } from '@clerk/clerk-expo';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { View, Text, ScrollView, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 
 const devices = [
   {
@@ -70,7 +76,7 @@ const Page = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.background }}>
-      <ScrollView>
+      <ScrollView contentInsetAdjustmentBehavior='automatic'>
         <View style={defaultStyles.block}>
           <FlatList
             scrollEnabled={false}
@@ -94,6 +100,66 @@ const Page = () => {
             )}
           />
         </View>
+        {/* */}
+        <View style={defaultStyles.block}>
+          <FlatList
+            scrollEnabled={false}
+            data={items}
+            renderItem={({ item }) => (
+              <View style={defaultStyles.item}>
+                <BoxIcon
+                  name={item.icon}
+                  backgroundColor={item.backgroundColor}
+                />
+                <Text style={{ flex: 1, fontSize: 18 }}>{item.name}</Text>
+                <Ionicons
+                  name='chevron-forward'
+                  size={20}
+                  color={Colors.gray}
+                />
+              </View>
+            )}
+            ItemSeparatorComponent={() => (
+              <View style={defaultStyles.separator} />
+            )}
+          />
+        </View>
+        {/* */}
+        <View style={defaultStyles.block}>
+          <FlatList
+            scrollEnabled={false}
+            data={support}
+            renderItem={({ item }) => (
+              <View style={defaultStyles.item}>
+                <BoxIcon
+                  name={item.icon}
+                  backgroundColor={item.backgroundColor}
+                />
+                <Text style={{ flex: 1, fontSize: 18 }}>{item.name}</Text>
+                <Ionicons
+                  name='chevron-forward'
+                  size={20}
+                  color={Colors.gray}
+                />
+              </View>
+            )}
+            ItemSeparatorComponent={() => (
+              <View style={defaultStyles.separator} />
+            )}
+          />
+        </View>
+        <TouchableOpacity onPress={() => signOut()} style={{}}>
+          <Text
+            style={{
+              color: Colors.primary,
+              fontSize: 18,
+              textAlign: 'center',
+              paddingVertical: 14,
+            }}
+          >
+            Log Out
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
