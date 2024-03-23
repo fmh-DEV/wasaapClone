@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import calls from '@/assets/data/calls.json';
 import { defaultStyles } from '@/constants/Styles';
+import { format } from 'date-fns';
 
 const Page = () => {
   //
@@ -35,7 +36,10 @@ const Page = () => {
           ),
         }}
       />
-      <ScrollView contentInsetAdjustmentBehavior='automatic'>
+      <ScrollView
+        contentInsetAdjustmentBehavior='automatic'
+        contentContainerStyle={{ paddingBottom: 40 }}
+      >
         <View style={defaultStyles.block}>
           <FlatList
             data={items}
@@ -66,6 +70,22 @@ const Page = () => {
                       {item.incoming ? 'Incoming' : 'Outgoing'}
                     </Text>
                   </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 6,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: Colors.gray }}>
+                    {format(item.date, 'MM.dd.yy')}
+                  </Text>
+                  <Ionicons
+                    name='information-circle-outline'
+                    size={24}
+                    color={Colors.primary}
+                  />
                 </View>
               </View>
             )}
