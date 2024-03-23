@@ -1,7 +1,7 @@
 import Colors from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,19 +14,36 @@ import {
 import calls from '@/assets/data/calls.json';
 import { defaultStyles } from '@/constants/Styles';
 import { format } from 'date-fns';
+import { SegmentedControl } from '@/components/SegmentedControl';
 
 const Page = () => {
   //
   const [isEditing, setIsEditing] = useState(false);
   const [items, setItems] = useState(calls);
+  const [selectedOption, setSelectedOption] = useState('All');
   const onEdit = () => {
     setIsEditing((prev) => !prev);
   };
+  //
+  useEffect(() => {
+    if (selectedOption === 'All') {
+      setItems(calls);
+    } else if (selectedOption === 'Missed') {
+      setItems(calls.filter((item) => item.missed));
+    }
+  }, [selectedOption]);
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.background }}>
       <Stack.Screen
         options={{
+          headerTitle: () => (
+            <SegmentedControl
+              options={['All', 'Missed']}
+              selectedOption={selectedOption}
+              onOptionPress={setSelectedOption}
+            />
+          ),
           headerLeft: () => (
             <TouchableOpacity onPress={onEdit}>
               <Text style={{ color: Colors.primary, fontSize: 18 }}>
