@@ -15,23 +15,42 @@ import calls from '@/assets/data/calls.json';
 import { defaultStyles } from '@/constants/Styles';
 import { format } from 'date-fns';
 import { SegmentedControl } from '@/components/SegmentedControl';
+import * as Haptics from 'expo-haptics';
 import Animated, {
   CurvedTransition,
   FadeInUp,
   FadeOut,
-  FadeOutUp,
+  useAnimatedStyle,
+  useSharedValue,
 } from 'react-native-reanimated';
+import SwipeableRow from '@/components/SwipeableRow';
 
 const transition = CurvedTransition.delay(100);
+
+const AnimatedTouchableOpacity =
+  Animated.createAnimatedComponent(TouchableOpacity);
 
 const Page = () => {
   //
   const [isEditing, setIsEditing] = useState(false);
   const [items, setItems] = useState(calls);
   const [selectedOption, setSelectedOption] = useState('All');
+  const editing = useSharedValue(-30);
+
+  const animatedRowStyles = useAnimatedStyle(() => ({
+    transform: [{ translateX: editing.value }],
+  }));
+
   const onEdit = () => {
-    setIsEditing((prev) => !prev);
+    let editingNew = !isEditing;
+    editing.value = editingNew ? 0 : -30;
+    setIsEditing(editingNew);
   };
+  const removeCall = (item: any) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setItems((prev) => prev.filter((i) => i.id !== item.id));
+  };
+
   //
   useEffect(() => {
     if (selectedOption === 'All') {
@@ -78,50 +97,69 @@ const Page = () => {
             )}
             itemLayoutAnimation={transition}
             renderItem={({ item, index }) => (
-              <Animated.View
-                entering={FadeInUp.delay(index * 20)}
-                exiting={FadeOut}
-              >
-                <View style={[defaultStyles.item]}>
-                  <Image source={{ uri: item.img }} style={styles.avatar} />
-                  <View style={{ flex: 1, gap: 2 }}>
-                    <Text
+              <SwipeableRow onDelete={() => removeCall(item)}>
+                <Animated.View
+                  style={{ flexDirection: 'row', alignItems: 'center' }}
+                  entering={FadeInUp.delay(index * 20)}
+                  exiting={FadeOut}
+                >
+                  <AnimatedTouchableOpacity
+                    onPress={() => removeCall(item)}
+                    style={animatedRowStyles}
+                  >
+                    <Ionicons
+                      name='remove-circle'
+                      size={24}
+                      color={Colors.red}
+                    />
+                  </AnimatedTouchableOpacity>
+                  <Animated.View
+                    style={[
+                      defaultStyles.item,
+                      animatedRowStyles,
+                      { paddingLeft: 15 },
+                    ]}
+                  >
+                    <Image source={{ uri: item.img }} style={styles.avatar} />
+                    <View style={{ flex: 1, gap: 2 }}>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          color: item.missed ? Colors.red : '#000',
+                        }}
+                      >
+                        {item.name}
+                      </Text>
+                      <View style={{ flexDirection: 'row', gap: 4 }}>
+                        <Ionicons
+                          name={item.video ? 'videocam' : 'call'}
+                          size={16}
+                          color={Colors.gray}
+                        />
+                        <Text style={{ flex: 1, color: Colors.gray }}>
+                          {item.incoming ? 'Incoming' : 'Outgoing'}
+                        </Text>
+                      </View>
+                    </View>
+                    <View
                       style={{
-                        fontSize: 18,
-                        color: item.missed ? Colors.red : '#000',
+                        flexDirection: 'row',
+                        gap: 6,
+                        alignItems: 'center',
                       }}
                     >
-                      {item.name}
-                    </Text>
-                    <View style={{ flexDirection: 'row', gap: 4 }}>
-                      <Ionicons
-                        name={item.video ? 'videocam' : 'call'}
-                        size={16}
-                        color={Colors.gray}
-                      />
-                      <Text style={{ flex: 1, color: Colors.gray }}>
-                        {item.incoming ? 'Incoming' : 'Outgoing'}
+                      <Text style={{ color: Colors.gray }}>
+                        {format(item.date, 'MM.dd.yy')}
                       </Text>
+                      <Ionicons
+                        name='information-circle-outline'
+                        size={24}
+                        color={Colors.primary}
+                      />
                     </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      gap: 6,
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text style={{ color: Colors.gray }}>
-                      {format(item.date, 'MM.dd.yy')}
-                    </Text>
-                    <Ionicons
-                      name='information-circle-outline'
-                      size={24}
-                      color={Colors.primary}
-                    />
-                  </View>
-                </View>
-              </Animated.View>
+                  </Animated.View>
+                </Animated.View>
+              </SwipeableRow>
             )}
           />
         </Animated.View>
