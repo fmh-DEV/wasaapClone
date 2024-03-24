@@ -22,6 +22,8 @@ import Animated, {
   FadeOutUp,
 } from 'react-native-reanimated';
 
+const transition = CurvedTransition.delay(100);
+
 const Page = () => {
   //
   const [isEditing, setIsEditing] = useState(false);
@@ -65,15 +67,16 @@ const Page = () => {
         contentInsetAdjustmentBehavior='automatic'
         contentContainerStyle={{ paddingBottom: 40 }}
       >
-        <View style={defaultStyles.block}>
+        <Animated.View style={defaultStyles.block} layout={transition}>
           <Animated.FlatList
+            skipEnteringExitingAnimations
             data={items}
             scrollEnabled={false}
             keyExtractor={(item) => item.id.toString()}
             ItemSeparatorComponent={() => (
               <View style={defaultStyles.separator} />
             )}
-            itemLayoutAnimation={FadeOutUp}
+            itemLayoutAnimation={transition}
             renderItem={({ item, index }) => (
               <Animated.View
                 entering={FadeInUp.delay(index * 20)}
@@ -121,7 +124,7 @@ const Page = () => {
               </Animated.View>
             )}
           />
-        </View>
+        </Animated.View>
       </ScrollView>
     </View>
   );
