@@ -40,7 +40,6 @@ const Layout = () => {
           name='calls'
           options={{
             title: 'Calls',
-            headerShown: false,
             tabBarIcon: ({ size, color }) => (
               <MaterialCommunityIcons
                 name='phone-outline'
@@ -48,6 +47,7 @@ const Layout = () => {
                 color={color}
               />
             ),
+            headerShown: false,
           }}
         />
 
@@ -67,6 +67,11 @@ const Layout = () => {
             tabBarIcon: ({ size, color }) => (
               <Ionicons name='chatbubbles' size={size} color={color} />
             ),
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: Colors.background,
+              //: segments[2] === '[id]' ? 'none' : 'flex',
+            },
           }}
         />
         <Tabs.Screen
