@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import React from 'react';
-import { Tabs } from 'expo-router';
+import { Tabs, useSegments } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   Ionicons,
@@ -10,6 +10,9 @@ import {
 import Colors from '@/constants/Colors';
 
 const Layout = () => {
+  //
+  const segments = useSegments();
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Tabs
@@ -70,7 +73,7 @@ const Layout = () => {
             headerShown: false,
             tabBarStyle: {
               backgroundColor: Colors.background,
-              //: segments[2] === '[id]' ? 'none' : 'flex',
+              display: segments[2] === '[id]' ? 'none' : 'flex',
             },
           }}
         />
