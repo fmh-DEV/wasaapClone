@@ -11,6 +11,7 @@ import {
 import messageData from '@/assets/data/messages.json';
 import Colors from '@/constants/Colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 
 const Page = () => {
   //
@@ -95,6 +96,39 @@ const Page = () => {
             />
           );
         }}
+        renderSend={(props) => (
+          <View
+            style={{
+              flexDirection: 'row',
+              height: 44,
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 10,
+              paddingHorizontal: 12,
+            }}
+          >
+            {text.length > 0 && (
+              <Send
+                {...props}
+                containerStyle={{
+                  justifyContent: 'center',
+                }}
+              >
+                <Ionicons name='send' color={Colors.primary} size={28} />
+              </Send>
+            )}
+            {text.length === 0 && (
+              <>
+                <Ionicons
+                  name='camera-outline'
+                  color={Colors.primary}
+                  size={28}
+                />
+                <Ionicons name='mic-outline' color={Colors.primary} size={28} />
+              </>
+            )}
+          </View>
+        )}
       />
     </ImageBackground>
   );
