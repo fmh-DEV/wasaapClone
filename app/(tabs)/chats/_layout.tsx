@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, Text } from 'react-native';
 import React from 'react';
 import { Link, Stack } from 'expo-router';
 import Colors from '@/constants/Colors';
@@ -44,6 +44,55 @@ const Layout = () => {
                   />
                 </TouchableOpacity>
               </Link>
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name='[id]'
+        options={{
+          title: '',
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: Colors.background,
+          },
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: 'row',
+                gap: 10,
+                paddingBottom: 4,
+                alignItems: 'center',
+                width: 220,
+              }}
+            >
+              <Image
+                source={{
+                  uri: 'https://pbs.twimg.com/profile_images/1564203599747600385/f6Lvcpcu_400x400.jpg',
+                }}
+                style={{ width: 40, height: 40, borderRadius: 50 }}
+              />
+              <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                Simon Grimm
+              </Text>
+            </View>
+          ),
+          headerRight: () => (
+            <View style={{ flexDirection: 'row', gap: 30 }}>
+              <TouchableOpacity>
+                <Ionicons
+                  name='videocam-outline'
+                  color={Colors.primary}
+                  size={30}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Ionicons
+                  name='call-outline'
+                  color={Colors.primary}
+                  size={30}
+                />
+              </TouchableOpacity>
             </View>
           ),
         }}
