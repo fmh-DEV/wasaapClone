@@ -20,6 +20,22 @@ const Page = () => {
 
   const insets = useSafeAreaInsets();
 
+  const swipeableRowRef = useRef<Swipeable | null>(null);
+  const [replyMessage, setReplyMessage] = useState<IMessage | null>(null);
+
+  const updateRowRef = useCallback(
+    (ref: any) => {
+      if (
+        ref &&
+        replyMessage &&
+        ref.props.children.props.currentMessage?._id === replyMessage._id
+      ) {
+        swipeableRowRef.current = ref;
+      }
+    },
+    [replyMessage]
+  );
+
   useEffect(() => {
     setMessages([
       ...messageData.map((message) => {
@@ -71,6 +87,7 @@ const Page = () => {
         renderAvatar={null}
         onInputTextChanged={setText}
         maxComposerHeight={100}
+        textInputProps={styles.composer}
         renderSystemMessage={(props) => {
           return (
             <SystemMessage {...props} textStyle={{ color: Colors.gray }} />
@@ -129,13 +146,29 @@ const Page = () => {
             )}
           </View>
         )}
+        renderInputToolbar={(props) => (
+          <InputToolbar
+            {...props}
+            containerStyle={{ backgroundColor: Colors.background }}
+            renderActions={() => (
+              <View>
+                <Ionicons name='add' color={Colors.primary} size={28} />
+              </View>
+            )}
+          />
+        )}
       />
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  composer: {},
+  composer: {
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+  },
 });
 
 export default Page;
