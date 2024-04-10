@@ -12,6 +12,8 @@ import messageData from '@/assets/data/messages.json';
 import Colors from '@/constants/Colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import ChatMessageBox from '@/components/ChatMessageBox';
+import ReplyMessageBar from '@/components/ReplyMessageBar';
 
 const Page = () => {
   //
@@ -61,6 +63,13 @@ const Page = () => {
       },
     ]);
   }, []);
+
+  useEffect(() => {
+    if (replyMessage && swipeableRowRef.current) {
+      swipeableRowRef.current.close();
+      swipeableRowRef.current = null;
+    }
+  }, [replyMessage]);
 
   const onSend = useCallback((messages = []) => {
     setMessages((previousMessages: any[]) =>
@@ -155,6 +164,19 @@ const Page = () => {
                 <Ionicons name='add' color={Colors.primary} size={28} />
               </View>
             )}
+          />
+        )}
+        renderMessage={(props) => (
+          <ChatMessageBox
+            {...props}
+            updateRowRef={updateRowRef}
+            setReplyOnSwipeOpen={setReplyMessage}
+          />
+        )}
+        renderChatFooter={() => (
+          <ReplyMessageBar
+            clearReply={() => setReplyMessage(null)}
+            message={replyMessage}
           />
         )}
       />
